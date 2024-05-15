@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+
+<div>
+    <div>
+        <!-- BookController.showAdd (Only ADMIN can see this element)-->
+        <a href="/books/add" class="add-item">
+            Add
+        </a>
+    </div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Available Copies</th>
+        </tr>
+        <!-- For each books you should have one <tr> like below -->
+        <tr class="item" th:each="book : ${books}">
+            <td th:text="${book.name}">[book.name]</td>
+            <td th:text="${book.category}">[book.category]</td>
+            <td th:text="${book.availableCopies}">[book.availableCopies]</td>
+            <td th:each="author : ${authors}">
+                <!-- For each of the book.authors show the following element-->
+                <span class="item-rel" th:each="book : ${book.author}" th:text="${author.name}"> [author.name]</span>
+            </td>
+            <td>
+                <!-- BookController.delete (Only ADMIN can see this element)-->
+                <form method="post" th:action="@{'/books/{id}/delete' (id=${book.id})}">
+                    <button type="submit" class="delete-item">Delete</button>
+                </form>
+                <!-- BookController.showEdit (Only ADMIN can see this element)-->
+                <a class="edit-item" th:href="@{'/books/{id}/edit' (id=${book.id})}">Edit</a>
+                <!-- BookController.tag -->
+                <form th:action="@{'/books/{id}/tag'(id=${book.id})}" method="POST">
+                    <button type="submit" class="like-item">Tag</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+</body>
+</html>

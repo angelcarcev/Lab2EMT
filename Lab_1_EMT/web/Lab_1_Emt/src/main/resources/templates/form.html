@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+<!-- The form should submit to BookController.create or BookController.update,
+     depending on whether we are creating or editing an entity -->
+<form method="post" th:action="${book!=null} ? @{'/books/{id}' (id=${book.id})} : '/books'">
+    <div>
+        <label for="f1">Name</label>
+        <input type="text"
+               id="f1"
+               name="name"
+               th:value="${book?.name}"
+               required>
+    </div>
+
+    <div>
+        <label for="f6">Available Copies</label>
+        <input type="number"
+               id="f6"
+               name="availableCopies"
+               th:value="${book?.availableCopies}"
+               required>
+    </div>
+    <div>
+        <label>Type</label><br/>
+        <label for="f4"></label><select id="f4" name="type">
+        <!-- For each type you should have one <option> like below  -->
+        <option th:each="types : ${type}" th:value="${types}" th:text="${types}"> [type_name] </option>
+    </select>
+    </div>
+    <div>
+        <label>Author</label><br/>
+        <label for="f5"></label><select id="f5" name="author" multiple>
+        <!-- For each author you should have one <option> like below  -->
+        <option value="[author.id]" th:each="authors : ${author}" th:value="${authors.id}" th:text="${authors.name}" th:selected="${book?.author.contains(authors)}">
+            [author.name]</option>
+    </select>
+    </div>
+
+    <button id="submit" type="submit">Submit</button>
+    <a id="back" href="/books" type="button" class="btn btn-primary">Back to books</a>
+</form>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
